@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserAuth">
+    <!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+    <typeAlias alias="UserAuth" type="cn.bong.dao.beans.UserAuth"/>
+
+    <select id="selectCountByPrimaryKey" parameterClass="UserAuth" resultClass="long">
+         select count(*) from user_auth where app_key=#appKey# and user_id=#userId#
+    </select>
+
+    <insert id="addUserAuth" parameterClass="UserAuth">
+        insert into
+        user_auth(app_key,user_id,gmt_created,gmt_modified) values
+        (#appKey#,#userId#,sysdate(),sysdate());
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterClass="UserAuth">
+        delete from user_auth where app_key=#appKey#   and user_id=#userId#
+    </delete>
+</sqlMap>
