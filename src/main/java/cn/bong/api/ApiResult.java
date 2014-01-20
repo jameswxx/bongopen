@@ -8,6 +8,7 @@ package cn.bong.api;
  * To change this template use File | Settings | File Templates.
  */
 public class ApiResult {
+
     private String apiVersion;
 
     private String apiName;
