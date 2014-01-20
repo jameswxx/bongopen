@@ -1,10 +1,11 @@
 package cn.bong.web;
 
-import cn.bong.api.ApiMapping;
-import cn.bong.api.ApiProcessor;
-import cn.bong.api.ApiResult;
-import cn.bong.api.ErrorInfo;
+import cn.bong.api.*;
+import cn.bong.api.util.ApiHelper;
+import cn.bong.api.util.DataEncoder;
+import cn.bong.dao.beans.AppInfo;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +29,6 @@ public class ApiGateWayServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Map map = request.getParameterMap();
         String apiName = request.getParameter("api");
         String apiVersion = request.getParameter("v");
         String appKey = request.getParameter("key");
@@ -37,25 +37,27 @@ public class ApiGateWayServlet extends HttpServlet {
 
 
         ApiResult result = null;
-        if (!verify(apiName, apiVersion, appKey, data, sign)) {
-            result = new ApiResult(apiVersion, apiName, ErrorInfo.VERIFY_ERROR);
-        } else {
-            ApiProcessor api = ApiMapping.getApi(apiName, apiVersion);
-            if (api == null) {
-                result = new ApiResult(apiVersion, apiName, ErrorInfo.NO_THIS_API);
+        try {
+            if (!ApiHelper.verify(apiName, apiVersion, appKey, data, sign)) {
+                result = new ApiResult(apiVersion, apiName, ErrorInfo.VERIFY_ERROR);
             } else {
-                result = api.process(new HashMap<String, String>());
-                result.setApiName(apiName);
-                result.setApiVersion(apiVersion);
+                ApiProcessor api = ApiMapping.getApi(apiName, apiVersion);
+                if (api == null) {
+                    result = new ApiResult(apiVersion, apiName, ErrorInfo.NO_THIS_API);
+                } else {
+                    data = DataEncoder.decodeUrl(data);
+                    result = api.process(JSON.parseObject(data));
+                    result.setApiName(apiName);
+                    result.setApiVersion(apiVersion);
+                }
             }
+        } catch (Exception e) {
+            result = new ApiResult(apiVersion, apiName, ErrorInfo.SYSTEM_ERROR);
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         response.setContentType("text/html;charset=GBk");
         print(response.getWriter(), result);
-    }
-
-    private boolean verify(String apiName, String apiVersion, String appKey, String data, String sign) {
-        return true;
     }
 
     private void print(PrintWriter out, ApiResult result) {

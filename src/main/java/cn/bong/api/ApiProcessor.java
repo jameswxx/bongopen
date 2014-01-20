@@ -1,5 +1,7 @@
 package cn.bong.api;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Map;
 
 /**
@@ -11,5 +13,5 @@ import java.util.Map;
  */
 public abstract class ApiProcessor {
 
-    public abstract ApiResult process(Map<String, String> params);
+    public abstract ApiResult process(JSONObject params);
 }

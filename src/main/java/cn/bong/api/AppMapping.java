@@ -2,6 +2,8 @@ package cn.bong.api;
 
 import cn.bong.dao.beans.AppInfo;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,5 +23,9 @@ public class AppMapping {
 
     public static AppInfo get(String apiKey) {
         return mapping.get(apiKey);
+    }
+
+    public static Collection<AppInfo> listAll(){
+        return mapping.values();
     }
 }

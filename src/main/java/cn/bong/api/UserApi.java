@@ -1,5 +1,7 @@
 package cn.bong.api;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +14,8 @@ import java.util.Map;
  */
 public class UserApi extends ApiProcessor {
     @Override
-    public ApiResult process(Map<String, String> params) {
-        String userId = params.get("userId");
+    public ApiResult process(JSONObject params) {
+        String userId = params.getString("userId");
         ApiResult result = new ApiResult("1.0", "getAppInfo", "hello " + userId);
         return result
                 ;

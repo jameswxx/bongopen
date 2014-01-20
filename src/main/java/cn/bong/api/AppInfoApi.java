@@ -1,6 +1,7 @@
 package cn.bong.api;
 
 import cn.bong.dao.beans.AppInfo;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class AppInfoApi extends ApiProcessor {
     @Override
-    public ApiResult process(Map<String, String> params) {
+    public ApiResult process(JSONObject params) {
         AppInfo app = new AppInfo();
         app.setId(123);
         app.setAppKey(123456);
