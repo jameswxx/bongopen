@@ -14,7 +14,7 @@ public class ApiResult {
 
     private boolean isSuccess;
 
-    private Integer errorCode;
+    private String errorCode;
 
     private String errorMsg;
 
@@ -64,7 +64,7 @@ public class ApiResult {
         isSuccess = success;
     }
 
-    public int getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
